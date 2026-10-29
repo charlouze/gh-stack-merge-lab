@@ -1,0 +1,42 @@
+import io
+import unittest
+from contextlib import redirect_stderr, redirect_stdout
+
+from textkit_cli import main
+
+
+def run(*argv):
+    stdout, stderr = io.StringIO(), io.StringIO()
+    with redirect_stdout(stdout), redirect_stderr(stderr):
+        code = main(list(argv))
+    return code, stdout.getvalue(), stderr.getvalue()
+
+
+class SqueezeTest(unittest.TestCase):
+    def test_prints_the_collapsed_text_and_a_newline_then_exits_with_0(self):
+        self.assertEqual(
+            run("squeeze", " Bonjour \t le\n monde "),
+            (0, "Bonjour le monde\n", ""),
+        )
+
+
+class CountTest(unittest.TestCase):
+    def test_prints_the_word_count_and_a_newline_then_exits_with_0(self):
+        self.assertEqual(
+            run("count", " Bonjour \t le\n monde "),
+            (0, "3\n", ""),
+        )
+
+
+class UnknownCommandTest(unittest.TestCase):
+    def test_unknown_command_lists_the_commands_on_stderr_and_exits_with_2(self):
+        code, stdout, stderr = run("shout", "Bonjour")
+        self.assertEqual((code, stdout), (2, ""))
+        self.assertIn("squeeze", stderr)
+        self.assertIn("count", stderr)
+
+    def test_missing_command_lists_the_commands_on_stderr_and_exits_with_2(self):
+        code, stdout, stderr = run()
+        self.assertEqual((code, stdout), (2, ""))
+        self.assertIn("squeeze", stderr)
+        self.assertIn("count", stderr)
