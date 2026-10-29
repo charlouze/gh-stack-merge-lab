@@ -4,6 +4,7 @@ import textkit
 
 _COMMANDS = {
     "squeeze": textkit.collapse_spaces,
+    "count": textkit.word_count,
 }
 
 

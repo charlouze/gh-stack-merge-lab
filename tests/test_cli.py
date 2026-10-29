@@ -20,13 +20,23 @@ class SqueezeTest(unittest.TestCase):
         )
 
 
+class CountTest(unittest.TestCase):
+    def test_prints_the_word_count_and_a_newline_then_exits_with_0(self):
+        self.assertEqual(
+            run("count", " Bonjour \t le\n monde "),
+            (0, "3\n", ""),
+        )
+
+
 class UnknownCommandTest(unittest.TestCase):
     def test_unknown_command_lists_the_commands_on_stderr_and_exits_with_2(self):
         code, stdout, stderr = run("shout", "Bonjour")
         self.assertEqual((code, stdout), (2, ""))
         self.assertIn("squeeze", stderr)
+        self.assertIn("count", stderr)
 
     def test_missing_command_lists_the_commands_on_stderr_and_exits_with_2(self):
         code, stdout, stderr = run()
         self.assertEqual((code, stdout), (2, ""))
         self.assertIn("squeeze", stderr)
+        self.assertIn("count", stderr)
