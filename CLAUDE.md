@@ -14,6 +14,8 @@ Single-context: one `GLOSSARY.md` and `docs/adr/` at the repo root. See `docs/ag
 
 ### Tests
 
+Python 3.14, standard library only. Run the tests with `mise exec python -- python -m unittest` (`python` alone is not on the PATH).
+
 ## Stacked delivery with `implement-spec`
 
 When running `/implement-spec`, deliver the change spec as a stack of PRs, one layer per ticket, instead of an integration branch. This overrides steps 3, 4, 5, 7 and 8 of the skill. The rest is unchanged: the task graph, the frontier, implementer subagents in parallel in their own worktrees, `tdd`.
