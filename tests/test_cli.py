@@ -18,3 +18,15 @@ class SqueezeTest(unittest.TestCase):
             run("squeeze", " Bonjour \t le\n monde "),
             (0, "Bonjour le monde\n", ""),
         )
+
+
+class UnknownCommandTest(unittest.TestCase):
+    def test_unknown_command_lists_the_commands_on_stderr_and_exits_with_2(self):
+        code, stdout, stderr = run("shout", "Bonjour")
+        self.assertEqual((code, stdout), (2, ""))
+        self.assertIn("squeeze", stderr)
+
+    def test_missing_command_lists_the_commands_on_stderr_and_exits_with_2(self):
+        code, stdout, stderr = run()
+        self.assertEqual((code, stdout), (2, ""))
+        self.assertIn("squeeze", stderr)
